@@ -1,5 +1,4 @@
 * xref:module-1.0-deploy-intro.adoc#deploy-intro[Module 1: Deploying vLLM]
-** xref:module-1.1-deploy-RHEL.adoc#deploy-RHEL[Module 1.1: Deploying vLLM on RHEL]
 ** xref:module-1.2-deploy-ocp.adoc#deploy-ocp[Module 1.2: Deploying vLLM on OpenShift]
 ** xref:module-1.3-deploy-rhoai.adoc#deploy-rhoai[Module 1.3: Deploying vLLM on OpenShift AI]
 ** xref:module-1.4-deploy-conclusion.adoc#deploy-conclusion[Module 1.4: Conclusion]
