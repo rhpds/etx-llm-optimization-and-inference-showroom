@@ -232,7 +232,7 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
   --workspace name=shared-workspace,claimName=guidellm-output-pvc  
 ----
 
-HINT: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy.  
+HINT: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy, example maybe vllm namespace have 3scale network policy which needs to be removed!
 
 Download the benchmark results from the *guidellm-benchmark* bucket in Minio and open the *benchmark-<TIMESTAMP>.txt* in a text editor.
 
