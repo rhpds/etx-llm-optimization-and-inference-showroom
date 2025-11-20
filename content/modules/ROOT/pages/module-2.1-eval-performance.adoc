@@ -184,7 +184,7 @@ Set your external model inference endpoint
 export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
 ----
 
-* Ensure that the helm repo is available
+* Ensure that the redhat-ai-services helm repo is available
 ----
 helm repo add redhat-ai-services https://redhat-ai-services.github.io/helm-charts/
 helm repo update redhat-ai-services
