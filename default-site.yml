@@ -1,6 +1,6 @@
 ---
 site:
-  title: LLM optimization and inference leveraging
+  title: ETX AI Super Lab 3 (VLLM Inference Optimization & Evaluation)
   url: https://github.com/rhpds/etx-llm-optimization-and-inference-showroom
   start_page: modules::index.adoc
 
