@@ -8,7 +8,7 @@ This module covers deploying Red Hat Inference Server (vLLM) across three key en
 
 ## Deployment Targets
 
-**RHEL (1.1)**: Bare metal and edge deployments requiring direct hardware control and minimal overhead. Ideal for single-node inference, air-gapped environments, or maximum performance scenarios. Notes that we are not covering this deployment method in this lab.
+**RHEL (1.1)**: Bare metal and edge deployments requiring direct hardware control and minimal overhead. Ideal for single-node inference, air-gapped environments, or maximum performance scenarios. Note that we are not covering this deployment method in this lab.
 
 **OpenShift (1.2)**: Container orchestration for scalable, multi-node deployments. Best for cloud-native architectures, horizontal scaling, and DevOps integration workflows.
 
