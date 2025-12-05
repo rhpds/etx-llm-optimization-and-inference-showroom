@@ -9,13 +9,10 @@
 * xref:module-3.0-optimization-intro.adoc#optimization-intro[Module 3: Optimizing vLLM Performance]
 ** xref:module-3.1-optimization-practice.adoc#optimization-practice[Module 3.1: Optimizing vLLM Performance]
 ** xref:module-3.2-optimization-conclusion.adoc#optimization-conclusion[Module 3.2: Optimization Conclusion]
-* xref:module-4.0-quantization-intro.adoc#quantization-intro[Module 4: Model Quantization]
-** xref:module-4.1-quantization.adoc#quantization-1[Module 4.1: Quantization Fundamentals]
-** xref:module-4.2-quantization.adoc#quantization-2[Module 4.2: Quantization Implementation]
-** xref:module-4.3-quantization-conclusion.adoc#quantization-conclusion[Module 4.3: Quantization Conclusion]
 * Reference Materials
 ** xref:reference-optimization-qualifying.adoc#optimization-qualifying[Enterprise Optimization Guide]
 ** xref:reference-quantization-technical.adoc#quantization-technical[Technical Quantization Reference]
 ** xref:reference-model-comparisons.adoc#model-comparisons[Model Comparison Examples]
 ** xref:reference-llmd.adoc#llmd-overview[llm-d Technical Overview]
 ** xref:resources.adoc#resources[Additional Resources]
+
