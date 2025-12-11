@@ -36,7 +36,7 @@ The defaults for the chart is enough for a normal, default installation of OpenS
 in the most common ways.
 
 If you would like to change the model that is served, change the storage method for the model, operate on a pre-downloaded model, or other customizations, you should use [Helm
-values](https://helm.sh/docs/chart_template_guide/values_files/) to override the defaults. 
+values](https://helm.sh/docs/chart_template_guide/values_files/) to override the defaults.
 
 == Verify Deployment
 
@@ -54,7 +54,7 @@ values](https://helm.sh/docs/chart_template_guide/values_files/) to override the
 
 == Uninstall Deployment
 
-In subsequent modules, we will use a vllm-kserve deployment to interact with the model served by vLLM. 
+In subsequent modules, we will use a vllm-kserve deployment to interact with the model served by vLLM.
 
 [source,sh,role=execute]
 ----
