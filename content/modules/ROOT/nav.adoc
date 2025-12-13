@@ -1,7 +1,7 @@
 * xref:module-1.0-deploy-intro.adoc#deploy-intro[Module 1: Deploying vLLM]
-** xref:module-1.2-deploy-ocp.adoc#deploy-ocp[Module 1.1: Deploying vLLM on OpenShift]
-** xref:module-1.3-deploy-rhoai.adoc#deploy-rhoai[Module 1.2: Deploying vLLM on OpenShift AI]
-** xref:module-1.4-deploy-conclusion.adoc#deploy-conclusion[Module 1.3: Conclusion]
+** xref:module-1.1-deploy-ocp.adoc#deploy-ocp[Module 1.1: Deploying vLLM on OpenShift]
+** xref:module-1.2-deploy-rhoai.adoc#deploy-rhoai[Module 1.2: Deploying vLLM on OpenShift AI]
+** xref:module-1.3-deploy-conclusion.adoc#deploy-conclusion[Module 1.3: Conclusion]
 * xref:module-2.0-eval-intro.adoc#eval-intro[Module 2: Evaluating vLLM]
 ** xref:module-2.1-eval-performance.adoc#eval-performance[Module 2.1: Evaluating vLLM Performance]
 ** xref:module-2.2-eval-accuracy.adoc#eval-accuracy[Module 2.2: Evaluating vLLM Accuracy]
@@ -15,4 +15,3 @@
 ** xref:reference-model-comparisons.adoc#model-comparisons[Model Comparison Examples]
 ** xref:reference-llmd.adoc#llmd-overview[llm-d Technical Overview]
 ** xref:resources.adoc#resources[Additional Resources]
-

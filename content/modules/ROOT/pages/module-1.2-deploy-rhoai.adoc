@@ -3,22 +3,32 @@
 [#deploy-rhoai]
 # Deploy vLLM on OpenShift AI with kserve and model car
 
-1. Log into your provided OpenShift environment. 
+1. Log into your provided OpenShift environment.
 
-2. Once in your OpenShift cluster setup a new project for your work.
+2. Once in your OpenShift cluster, confirm you're in vllm namespace
 
 [source,console,role=execute,subs=attributes+]
 ----
-oc new-project rhaiis-demo
+oc project vllm
 ----
 
-We will use a helm chart to deploy our model-car on vLLM in OpenShift AI. This helm chart is designed to be easily reusable and we recommend starting with this base for your deployment. You may also substitute the official Red Hat AI Inference Server image in the helm chart deployment on a standard OpenShift cluster. For the purposes of this training experience, we are using the vllm-kserve image on OpenShift AI. 
+We will use a helm chart to deploy our model-car on vLLM in OpenShift AI. This helm chart is designed to be easily reusable and we recommend starting with this base for your deployment. You may also substitute the official Red Hat AI Inference Server image in the helm chart deployment on a standard OpenShift cluster. For the purposes of this training experience, we are using the vllm-kserve image on OpenShift AI.
 
-If you do use the RHAIIS image as seen in the previous module, you will run into the authentication requirements required for pulling the image and it would add unnecessary barriers to the training experience. 
+If you do use the RHAIIS image as seen in the previous module, you will run into the authentication requirements required for pulling the image and it would add unnecessary barriers to the training experience.
 
 You may view the helm chart at this link: https://github.com/redhat-ai-services/helm-charts/tree/main/charts/vllm-kserve and within our workshop repository under etx-llm-optimization-and-inference-leveraging/workshop_code/deploy_vllm/vllm-kserve.
 
-Let's take a look at our provided custom values file (etx-llm-optimization-and-inference-leveraging/workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml):
+First, we'll clone the ETX vLLM optimization repo.
+
+. Clone the ETX vLLM optimization repo.
++
+[source,console,role=execute,subs=attributes+]
+----
+git clone https://github.com/rhpds/etx-llm-optimization-and-inference-showroom.git
+----
+
+
+Let's take a look at our provided custom values file (etx-llm-optimization-and-inference-leveraging-showroom/workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml):
 
 [source,console,role=execute,subs=attributes+]
 ----
@@ -27,23 +37,59 @@ deploymentMode: RawDeployment
 model:
   uri: oci://quay.io/redhat-ai-services/modelcar-catalog:granite-3.3-8b-instruct
   args:
-    - "--max-model-len=130000"
+    - "--max-model-len=32768"
     - "--enable-auto-tool-choice"
     - "--tool-call-parser=granite"
     - "--chat-template=/app/data/template/tool_chat_template_granite.jinja"
 ----
 
+## Deploy the vLLM model car chart
+
+Run the following commands to deploy our vLLM-kserve helm chart. The chart version we are using is published, but we will be deploying it from our cloned repository so that we may view files and make any changes if desired.
+
+OPTIONAL: Before deploying, adjust your `values.yaml` file as you desire as described in above sections.
+
+[source,console,role=execute,subs=attributes+]
+----
+oc create namespace rhaiis-demo
+helm install granite-8b-instruct redhat-ai-services/vllm-kserve --version 0.5.11 \
+  -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml
+----
+
+[TIP]
+====
+If you didn't add the redhat-ai-services helm chart repository to your local helm client, you can do so by running the following command:
+
+[source,console,role=execute,subs=attributes+]
+----
+helm repo add redhat-ai-services https://redhat-ai-services.github.io/helm-charts/
+helm repo update redhat-ai-services
+----
+====
+
+## Verify deployment
+
+It will take several minutes for the model deployment to be ready.
+
+Use your preferred method(s) to verify the successful deployment.
+
+* Login to OpenShift AI and go to your *rhaiis-demo* Data Science Project. Wait until the model fully deploys (green check) before continuing.
+
+image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
+
+[TIP]
+====
 You may substitute the modelcar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments. View our available modelcars here: https://quay.io/repository/redhat-ai-services/modelcar-catalog?tab=tags
 
-If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately. 
+If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately.
 
 * --tool-call-parser:
 
-See available options here: https://docs.vllm.ai/en/latest/cli/index.html#-tool-call-parser 
+See available options here: https://docs.vllm.ai/en/latest/cli/index.html#-tool-call-parser
 
 * --chat-template:
 
-See available chat templates here: https://docs.vllm.ai/en/stable/features/tool_calling.html 
+See available chat templates here: https://docs.vllm.ai/en/stable/features/tool_calling.html
 
 ## Understanding the tool-call-parser and chat-template features
 
@@ -72,42 +118,7 @@ The --tool-call-parser and --chat-template arguments need to align with the mode
 **Incorrect Tool Calls**: It might incorrectly parse parts of the model's output as tool calls, leading to errors or unintended actions when those "calls" are executed.
 
 **Loss of Functionality**: The entire tool-use capability of the model becomes effectively unusable if the parser cannot correctly interpret the model's tool-calling output.
-
-## vLLM arguments
-
-## Deploy the vLLM model car chart
-
-Run the following commands to deploy our vLLM-kserve helm chart. The chart version we are using is published, but we will be deploying it from our cloned repository so that we may view files and make any changes if desired.
-
-OPTIONAL: Before deploying, adjust your `values.yaml` file as you desire as described in above sections.
-
-[source,console,role=execute,subs=attributes+]
-----
-oc create namespace rhaiis-demo
-helm install granite-8b-instruct redhat-ai-services/vllm-kserve --version 0.5.11 \
-  -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml 
-----
-
-[TIP]
 ====
-If you didn't add the redhat-ai-services helm chart repository to your local helm client, you can do so by running the following command:
-
-[source,console,role=execute,subs=attributes+]
-----
-helm repo add redhat-ai-services https://redhat-ai-services.github.io/helm-charts/
-helm repo update redhat-ai-services
-----
-====
-
-## Verify deployment
-
-It will take several minutes for the model deployment to be ready.
-
-Use your preferred method(s) to verify the successful deployment.
-
-* Login to OpenShift AI and go to your *rhaiis-demo* Data Science Project. Wait until the model fully deploys (green check) before continuing. 
-
-image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
 
 ## Conclusion
 

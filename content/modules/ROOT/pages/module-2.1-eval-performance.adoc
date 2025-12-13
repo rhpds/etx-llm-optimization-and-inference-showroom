@@ -19,11 +19,11 @@ In Generative AI systems, evaluating system performance including latency, throu
 
 GuideLLM is a toolkit for evaluating and optimizing the deployment of LLMs. By simulating real-world inference workloads, GuideLLM enables you to easily assess the performance, resource requirements and cost implications of deploying LLMs on various hardware configurations. This approach ensures efficient, scalable and cost-effective LLM inference serving while maintaining high service quality.
 
-GuideLLM is now officially a part of the vLLM upstream project. This toolset is one of the primary ways Red Hat internal teams are benchmarking customer models. GuideLLM will be the main framework we will recommend to our customers with the scope of model performance and optimization. 
+GuideLLM is now officially a part of the vLLM upstream project. This toolset is one of the primary ways Red Hat internal teams are benchmarking customer models. GuideLLM will be the main framework we will recommend to our customers with the scope of model performance and optimization.
 
 ### Trusty AI vs GuideLLM
 
-Trusty AI maintains the scope of responsible AI, while GuideLLM is focused on benchmarking and model optimization. That being said, there are some current crossovers. Trusty AI incorporates `lm-eval-harness` and GuideLLM is roadmapped to include this test harness as well. Trusty AI will continue to be an incorporated and supported operator deployment in RHOAI. There are currently no plans to have a similar deployment method for GuideLLM. 
+Trusty AI maintains the scope of responsible AI, while GuideLLM is focused on benchmarking and model optimization. That being said, there are some current crossovers. Trusty AI incorporates `lm-eval-harness` and GuideLLM is roadmapped to include this test harness as well. Trusty AI will continue to be an incorporated and supported operator deployment in RHOAI. There are currently no plans to have a similar deployment method for GuideLLM.
 
 ## Set Up GuideLLM tekton pipeline
 
@@ -41,7 +41,7 @@ curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | g
 tkn version
 ----
 
-NOTE: For Mac users (Darwin), update the above curl command to download the `*_Darwin_all.tar.gz` archive. 
+NOTE: For Mac users (Darwin), update the above curl command to download the `*_Darwin_all.tar.gz` archive.
 
 For our lab today, we will utilize the Tekton pipeline on our OpenShift AI cluster. A pipeline deployment provides the following benefits:
 
@@ -53,21 +53,15 @@ For our lab today, we will utilize the Tekton pipeline on our OpenShift AI clust
 * Version control / auditability
 * Better handling of complex, multi-stage workflows
 
-First, we'll clone the ETX vLLM optimization repo. Then we'll clone the benchmark pipeline repo, apply the PVC, task and pipeline. We'll also create an s3 bucket in Minio where the pipeline will upload the benchmark results.
-
-. Clone the ETX vLLM optimization repo.
-+
-[source,console,role=execute,subs=attributes+]
-----
-git clone https://github.com/redhat-ai-services/etx-llm-optimization-and-inference-leveraging.git
-----
+First, we'll clone the GuideLLM pipeline repo. Then we'll clone the benchmark pipeline repo, apply the PVC, task and pipeline. We'll also create an s3 bucket in Minio where the pipeline will upload the benchmark results.
 
 . Clone the GuideLLM pipeline repo.
+
 +
 [source,console,role=execute,subs=attributes+]
 ----
-cd etx-llm-optimization-and-inference-leveraging
-git clone https://github.com/jhurlocker/guidellm-pipeline.git 
+cd etx-llm-optimization-and-inference-showroom
+git clone https://github.com/ishuverma/guidellm-pipeline.git
 ----
 
 . Apply the PVC, task, and pipeline
@@ -85,11 +79,11 @@ Before running the pipeline, let's review the options for GuideLLM more closely.
 
 ## GuideLLM Arguments
 
-* Peruse the available GuideLLM https://github.com/neuralmagic/guidellm?tab=readme-ov-file#configurations[configuration options]. 
+* Peruse the available GuideLLM https://github.com/vllm-project/guidellm[configuration options].
 * The GitHub README gives detailed information about configuration flags
 
 ### Input/Output tokens
-For different use cases, you can set different standardized dataset profiles that can be passed in as arguments in GuideLLM. For example, the following variables represent input and output tokens, respectively, based on the given use case: 
+For different use cases, you can set different standardized dataset profiles that can be passed in as arguments in GuideLLM. For example, the following variables represent input and output tokens, respectively, based on the given use case:
 
 * **Chat (512/256)**
 * **RAG (4096/512)**
@@ -100,7 +94,7 @@ Using these profiles, we can map specific I/O token scenarios to real-world use 
 
 ### --rate-type
 
-**--rate-type** defines the type of benchmark to run. By default GuideLLM will do a sweep of available benchmarks, but you may choose to isolate specific benchmark tests. 
+**--rate-type** defines the type of benchmark to run. By default GuideLLM will do a sweep of available benchmarks, but you may choose to isolate specific benchmark tests.
 
 * synchronous: Runs a single stream of requests one at a time. --rate must not be set for this mode.
 * throughput: Runs all requests in parallel to measure the maximum throughput for the server (bounded by GUIDELLM__MAX_CONCURRENCY config argument). --rate must not be set for this mode.
@@ -193,35 +187,15 @@ helm repo update redhat-ai-services
 NOTE: Make sure your granite-8b model is deployed on OpenShift AI. If you need to deploy it run: +
 `helm upgrade -i granite-8b redhat-ai-services/vllm-kserve --version 0.5.11 --values workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml -n vllm`
 
-* Deploy helm if its not available on your RHEL instance (bastion host)
-----
-Helm now has an installer script that will automatically grab the latest version of Helm and install it locally.
 
-You can fetch that script, and then execute it locally. It's well documented so that you can read through it and understand what it is doing before you run it.
-
-$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
-$ chmod 700 get_helm.sh
-$ ./get_helm.sh
-
-Alternatively, you can also curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
-----
-
-* Deploy tkn cli if its not available on your RHEL instance (bastion host)
-----
-If you are using the latest releases of Fedora or RHEL or CentOS, you may use the TektonCD CLI unofficial copr package repository instead or can use this url to download and deply tkn cli (https://docs.redhat.com/en/documentation/red_hat_openshift_pipelines/1.17/html/pipelines_cli_tkn_reference/installing-tkn):
-
-sudo dnf copr enable chmouel/tektoncd-cli
-sudo dnf install tektoncd-cli
-----
-
-Run the pipeline with necessary parameters in a terminal. Accept the defaults when prompted. If you chose a different model, adjust the *target* parameter. 
+Run the pipeline with necessary parameters in a terminal. Accept the defaults when prompted. If you chose a different model, adjust the *target* parameter.
 
 [source,console,role=execute,subs=attributes+]
 ----
 tkn pipeline start guidellm-benchmark-pipeline -n vllm \
   --param target=$INFERENCE_ENDPOINT/v1 \
-  --param model-name="granite-8b" \               
-  --param processor="ibm-granite/granite-3.3-8b-instruct" \       
+  --param model-name="granite-8b" \
+  --param processor="ibm-granite/granite-3.3-8b-instruct" \
   --param data-config="prompt_tokens=512,output_tokens=128" \
   --param max-seconds="30" \
   --param huggingface-token="" \
@@ -229,12 +203,14 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
   --param rate="2" \
   --param rate-type="sweep" \
   --param max-concurrency="10" \
-  --workspace name=shared-workspace,claimName=guidellm-output-pvc  
+  --workspace name=shared-workspace,claimName=guidellm-output-pvc
 ----
 
 HINT: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy, example maybe vllm namespace have 3scale network policy which needs to be removed!
 
-Download the benchmark results from the *guidellm-benchmark* bucket in Minio and open the *benchmark-<TIMESTAMP>.txt* in a text editor.
+## Download Results
+
+GuideLLM writes several output files that are uploaded to Minio. Each one focuses on a different layer of analysis, ranging from a quick on-screen summary to fully structured data for dashboards and regression pipelines.
 
 Get the route to the Minio UI. The login is *_minio/minio123_*
 
@@ -245,11 +221,33 @@ oc get route console -n ic-shared-minio -o jsonpath='{.spec.host}'
 
 Minio bucket
 
-image::benchmark_results_file_in_minio.png[benchmark results in Minio]
+image::benchmark_results_file_in_minio-1.png[benchmark results in Minio]
 
-Benchmark results
+## Inspect Results
 
-image::benchmark_results_minio.png[benchmark results]
+### benchmarks.txt
+
+The txt file provides lightweight summary with high-level statistics for each benchmark in the run. It's useful for quick checks to confirm that the server responded correctly, the load sweep completed, and the system behaved as expected. Additionally, the output tables can be copied and pasted into spreadsheet software using | as the delimiter. The sections will look similar to the following:
+
+image::benchmark_results_txt.png[benchmark results]
+
+Download the benchmark results from the *guidellm-benchmark* bucket in Minio.
+
+ and open the *benchmark-<TIMESTAMP>.txt* in a text editor.
+
+
+### benchmarks.json
+
+This file is the authoritative record of the entire benchmark session. It includes configuration, metadata, per-benchmark statistics, and sample request entries with individual request timings. Use it for debugging, deeper analysis, or loading into Python with GenerativeBenchmarksReport.
+
+Alternatively, a yaml version of this file can be generated for easier human readability with the same content as benchmarks.json using the --outputs yaml argument.
+
+
+### benchmarks.html
+
+The HTML report provides a visual summary of results, including charts of latency distributions, throughput behavior, and generation patterns. It's ideal for quick exploration or sharing with teammates without requiring them to parse JSON. You can view the html file in the browser and set SLO values.
+
+image::benchmark_results_html.png[benchmark results in html]
 
 ### Evaluate Output and Adjust GuideLLM Settings
 
@@ -270,8 +268,6 @@ GuideLLM captures the following metrics during a full sweep:
 . **Inter-Token Latency (mean, median, p99)**
 
 . **Time per output token (mean, median, p99)**
-
-See the complete https://github.com/neuralmagic/guidellm/blob/main/docs/metrics.md[metrics documentation^]. 
 
 ### Reading Output
 
@@ -402,7 +398,7 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
   --workspace name=shared-workspace,claimName=guidellm-output-pvc
 ----
 
-**Technical Consulting Value**: 
+**Technical Consulting Value**:
 
 - Establishes theoretical maximum capacity for infrastructure sizing
 - Identifies hardware bottlenecks and scaling limits
@@ -468,7 +464,7 @@ Run multiple configurations to build performance profiles for client decision-ma
 Execute all three token configurations sequentially and compare:
 
 1. **Baseline** (Chat): 256/128 tokens
-2. **Medium** (Mixed): 1024/256 tokens  
+2. **Medium** (Mixed): 1024/256 tokens
 3. **Heavy** (RAG): 4096/512 tokens
 
 **Analysis Points for Technical Consulting**:
@@ -493,7 +489,7 @@ Test each rate type with consistent token configuration to isolate performance c
 
 - **Infrastructure Sizing**: Use throughput results for hardware recommendations
 
-- **SLA Development**: Leverage latency percentiles for performance guarantees  
+- **SLA Development**: Leverage latency percentiles for performance guarantees
 
 - **Cost Modeling**: Apply sustained load results to pricing calculations
 
@@ -560,7 +556,7 @@ Cost per Request = (GPU Hours x Hourly Rate) / Total Requests Processed
 
 - **Premium**: P99 < 500ms, High throughput, Premium pricing
 
-- **Standard**: P99 < 1000ms, Medium throughput, Standard pricing  
+- **Standard**: P99 < 1000ms, Medium throughput, Standard pricing
 
 - **Economy**: P99 < 2000ms, Lower throughput, Budget pricing
 
@@ -586,7 +582,7 @@ Required GPUs = (Peak Expected RPS x Safety Margin) / Sustainable RPS per GPU
 2. **ITL >> TTFT**: Compute or batching inefficiency
 3. **Both High**: Infrastructure under-sizing or configuration issues
 
-#### Low Throughput Diagnosis  
+#### Low Throughput Diagnosis
 1. **Compare synchronous vs throughput**: Reveals batching effectiveness
 2. **Monitor GPU utilization**: Low utilization indicates non-GPU bottlenecks
 3. **Analyze queue depths**: High queuing suggests insufficient parallelism
