@@ -32,16 +32,15 @@ There are several current ways you may deploy and use GuideLLM.
 * CLI tool: https://github.com/vllm-project/guidellm/blob/main/docs/guides/cli.md[documented] in the upstream project.
 * Python library: Not yet in current upstream documentation. You can see an example here in this https://redhatquickcourses.github.io/genai-vllm/genai-vllm/1/rhoai_deploy/guide_llm.html[guide]
 * Kubernetes job: You can see an example of this in this https://github.com/rh-aiservices-bu/guidellm-pipeline[repository]
-* Tekton pipeline: Refer to this https://github.com/jhurlocker/guidellm-pipeline.git[repository] which was forked from above repository.
-** Run the below command to install the Tekton CLI
-+
-[source,console,role=execute,subs=attributes+]
-----
-curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | grep "browser_download_url.*_Linux_x86_64.tar.gz" | cut -d '"' -f 4) | sudo tar -xz -C /usr/local/bin tkn
-tkn version
-----
+* Tekton pipeline: Refer to this https://github.com/ishuverma/guidellm-pipeline.git[repository] which was forked from above repository.
 
-NOTE: For Mac users (Darwin), update the above curl command to download the `*_Darwin_all.tar.gz` archive.
+NOTE: Run the below command to install the Tekton CLI +
+**For Lab Showroom terminal:** +
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash +
+**For your local machine:** +
+curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | grep "browser_download_url.*_Linux_x86_64.tar.gz" | cut -d '"' -f 4) | sudo tar -xz -C /usr/local/bin tkn +
+**For Mac users (Darwin):** Update the above curl command to download the `*_Darwin_all.tar.gz` archive. +
+tkn version
 
 For our lab today, we will utilize the Tekton pipeline on our OpenShift AI cluster. A pipeline deployment provides the following benefits:
 
@@ -313,6 +312,13 @@ For advanced engagements, it's crucial to demonstrate how different workload cha
 Understanding how input/output token ratios affect performance is essential for capacity planning and cost estimation.
 
 #### Exercise 1a: Chat Application Simulation
+Set your external model inference endpoint
+
+[source,console,role=execute,subs=attributes+]
+----
+export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+----
+
 Test a typical conversational AI scenario with short prompts and responses:
 
 [source,console,role=execute]
@@ -334,6 +340,13 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
 **Business Context**: Represents customer service chatbots, virtual assistants, or interactive coding assistants where users expect rapid, conversational responses.
 
 #### Exercise 1b: RAG (Retrieval-Augmented Generation) Simulation
+Set your external model inference endpoint
+
+[source,console,role=execute,subs=attributes+]
+----
+export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+----
+
 Test document-heavy workloads with large context windows:
 
 [source,console,role=execute]
@@ -355,6 +368,13 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
 **Business Context**: Enterprise knowledge base queries, document analysis, or research assistance where large amounts of context are processed.
 
 #### Exercise 1c: Code Generation Workload
+Set your external model inference endpoint
+
+[source,console,role=execute,subs=attributes+]
+----
+export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+----
+
 Test balanced input/output for development use cases:
 
 [source,console,role=execute]
@@ -380,6 +400,13 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
 Different rate types reveal distinct performance characteristics critical for technical consulting. Select one option to test during this exercise due to time restrictions.
 
 #### Exercise 2a: Peak Capacity Assessment (Throughput)
+Set your external model inference endpoint
+
+[source,console,role=execute,subs=attributes+]
+----
+export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+----
+
 Determine maximum theoretical performance:
 
 [source,console,role=execute]
@@ -405,6 +432,13 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
 - Provides baseline for capacity planning and cost modeling
 
 #### Exercise 2b: Real-World Load Simulation (Constant)
+Set your external model inference endpoint
+
+[source,console,role=execute,subs=attributes+]
+----
+export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+----
+
 Test sustained production loads:
 
 [source,console,role=execute]
@@ -430,6 +464,13 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
 - Supports SLA definition and performance guarantees
 
 #### Exercise 2c: Burst Traffic Analysis (Poisson)
+Set your external model inference endpoint
+
+[source,console,role=execute,subs=attributes+]
+----
+export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+----
+
 Test irregular, bursty workloads typical in enterprise environments:
 
 [source,console,role=execute]
