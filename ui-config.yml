@@ -7,13 +7,8 @@ default_width: 30
 persist_url_state: true
 
 tabs:
-  - name: Terminal 1
-    secondary_name: Terminal 2
-    type: 'double-terminal'
-  - name: Codeserver
-    type: 'codeserver'
-  - name: Jupyter Lab
-    port: '9443'
-    path: '/'
-  - name: Llamastack Docs
-    url: 'https://llama-stack.readthedocs.io/en/latest/'
+  - name: Bastion
+    path: /wetty
+    port: 443
+  - name: OCP Console
+    url: 'https://console-openshift-console.${DOMAIN}'
