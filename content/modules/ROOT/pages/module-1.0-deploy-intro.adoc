@@ -8,7 +8,7 @@ This module covers deploying Red Hat Inference Server (vLLM) across three key en
 
 ## Deployment Targets
 
-**OpenShift AI (1.1)**: Managed AI platform providing MLOps capabilities, data science workflows, and enterprise governance. Optimal for integrated AI pipelines and managed model serving.
+**OpenShift AI**: Managed AI platform providing MLOps capabilities, data science workflows, and enterprise governance. Optimal for integrated AI pipelines and managed model serving.
 
 ## Learning Objectives
 
