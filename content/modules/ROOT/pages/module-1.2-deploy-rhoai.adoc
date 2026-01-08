@@ -89,7 +89,11 @@ image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
 
 [NOTE]
 ====
-You may substitute the ModelCar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments. View our available ModelCars here: https://quay.io/repository/redhat-ai-services/modelcar-catalog?tab=tags
+You may substitute the ModelCar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments. 
+
+Red Hat Services maintains a collection of pre-built ModelCars on Quay here: https://quay.io/repository/redhat-ai-services/modelcar-catalog?tab=tags
+
+Alternatively, you can explore officially published models in the Model Catalog (not enabled on this cluster) in the OpenShift AI Dashboard.
 
 If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately.
 
