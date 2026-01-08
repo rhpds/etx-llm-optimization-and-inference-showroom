@@ -73,7 +73,8 @@ OPTIONAL: Before deploying, adjust your `values.yaml` file as you desire as desc
 [source,console,role=execute,subs=attributes+]
 ----
 helm install granite-8b-instruct redhat-ai-services/vllm-kserve --version 0.5.11 \
-  -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml
+  -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml \
+  -n vllm
 ----
 
 ## Verify deployment
