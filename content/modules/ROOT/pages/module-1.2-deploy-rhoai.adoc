@@ -64,7 +64,7 @@ model:
 ----
 ====
 
-## Deploy the vLLM model car chart
+## Deploy the vLLM KServe chart
 
 Run the following commands to deploy our vLLM-kserve helm chart. The chart version we are using is published, but we will be deploying it from our cloned repository so that we may view files and make any changes if desired.
 
