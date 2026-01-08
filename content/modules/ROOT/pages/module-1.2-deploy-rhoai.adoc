@@ -16,6 +16,13 @@ oc project vllm
 
 We will use a helm chart to deploy our model-car on vLLM in OpenShift AI. This helm chart is designed to be easily reusable and we recommend starting with this base for your deployment. You may also substitute the official Red Hat AI Inference Server image in the helm chart deployment on a standard OpenShift cluster. For the purposes of this training experience, we are using the vllm-kserve image on OpenShift AI.
 
+First, we'll install helm CLI
+
+[source,console,role=execute,subs=attributes+]
+----
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
+----
+
 Run the following commands to add the redhat-ai-services helm chart repository to your local helm client
 
 [source,console,role=execute,subs=attributes+]
@@ -36,6 +43,7 @@ You may view the helm chart at this link: https://github.com/redhat-ai-services/
 [source,console,role=execute,subs=attributes+]
 ----
 git clone https://github.com/rhpds/etx-llm-optimization-and-inference-showroom.git
+cd etx-llm-optimization-and-inference-showroom.git
 ----
 
 [NOTE]
@@ -74,7 +82,8 @@ It will take several minutes for the model deployment to be ready.
 
 Use your preferred method(s) to verify the successful deployment.
 
-* Login to OpenShift AI and go to your *vllm Data Science Project. Wait until the model fully deploys (green check) before continuing.
+* Login to OpenShift AI ({openshift_cluster_admin_username}/{openshift_cluster_admin_password})
+* Go to your *vllm Data Science Project. Wait until the model fully deploys (green check) before continuing.
 
 image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
 
