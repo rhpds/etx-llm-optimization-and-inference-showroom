@@ -96,7 +96,7 @@ Red Hat Services maintains a collection of pre-built ModelCars on Quay here: htt
 
 Alternatively, you can explore officially published models in the Model Catalog (not enabled on this cluster) in the OpenShift AI Dashboard.
 
-If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately.
+If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately, or remove them entirely.
 
 * --tool-call-parser:
 
@@ -108,7 +108,7 @@ See available chat templates here: https://docs.vllm.ai/en/stable/features/tool_
 
 ## Understanding the tool-call-parser and chat-template features
 
-The --tool-call-parser and --chat-template arguments need to align with the model because they define the specific input and output formats that the model was trained on and expects during inference. Here's a more detailed explanation:
+The --tool-call-parser and --chat-template arguments are used to help enable tool-calling in vLLM.  By default, tool calling is not enabled for most models because it adds additional overhead to each request, even if tool calling is not being utilized. These arguments need to align with the model because they define the specific input and output formats that the model was trained on and expects during inference. Here's a more detailed explanation:
 
 * Chat Template (--chat-template):
 
