@@ -64,7 +64,7 @@ model:
 ----
 ====
 
-## Deploy the vLLM model car chart
+## Deploy the vLLM KServe chart
 
 Run the following commands to deploy our vLLM-kserve helm chart. The chart version we are using is published, but we will be deploying it from our cloned repository so that we may view files and make any changes if desired.
 
@@ -73,7 +73,8 @@ OPTIONAL: Before deploying, adjust your `values.yaml` file as you desire as desc
 [source,console,role=execute,subs=attributes+]
 ----
 helm install granite-8b-instruct redhat-ai-services/vllm-kserve --version 0.5.11 \
-  -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml
+  -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml \
+  -n vllm
 ----
 
 ## Verify deployment
@@ -89,9 +90,13 @@ image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
 
 [NOTE]
 ====
-You may substitute the modelcar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments. View our available modelcars here: https://quay.io/repository/redhat-ai-services/modelcar-catalog?tab=tags
+You may substitute the ModelCar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments. 
 
-If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately.
+Red Hat Services maintains a collection of pre-built ModelCars on Quay here: https://quay.io/repository/redhat-ai-services/modelcar-catalog?tab=tags
+
+Alternatively, you can explore officially published models in the Model Catalog (not enabled on this cluster) in the OpenShift AI Dashboard.
+
+If you choose to use a different model you'll need to ensure to change the tool-call-parser and the chat-template fields appropriately, or remove them entirely.
 
 * --tool-call-parser:
 
@@ -103,7 +108,7 @@ See available chat templates here: https://docs.vllm.ai/en/stable/features/tool_
 
 ## Understanding the tool-call-parser and chat-template features
 
-The --tool-call-parser and --chat-template arguments need to align with the model because they define the specific input and output formats that the model was trained on and expects during inference. Here's a more detailed explanation:
+The --tool-call-parser and --chat-template arguments are used to help enable tool-calling in vLLM.  By default, tool calling is not enabled for most models because it adds additional overhead to each request, even if tool calling is not being utilized. These arguments need to align with the model because they define the specific input and output formats that the model was trained on and expects during inference. Here's a more detailed explanation:
 
 * Chat Template (--chat-template):
 
