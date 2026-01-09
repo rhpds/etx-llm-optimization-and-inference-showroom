@@ -34,13 +34,25 @@ There are several current ways you may deploy and use GuideLLM.
 * Kubernetes job: You can see an example of this in this https://github.com/rh-aiservices-bu/guidellm-pipeline[repository]
 * Tekton pipeline: Refer to this https://github.com/ishuverma/guidellm-pipeline.git[repository] which was forked from above repository.
 
-NOTE: Run the below command to install the Tekton CLI +
-**For Lab Showroom terminal:** +
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash +
-**For your local machine:** +
+### Install tkn CLI
+
+. Run the below command to install the Tekton CLI
+
++
+[source,console,role=execute,subs=attributes+]
+----
 curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | grep "browser_download_url.*_Linux_x86_64.tar.gz" | cut -d '"' -f 4) | sudo tar -xz -C /usr/local/bin tkn +
-**For Mac users (Darwin):** Update the above curl command to download the `*_Darwin_all.tar.gz` archive. +
+----
+
+. Verify that tkn CLI works
+
++
+[source,console,role=execute,subs=attributes+]
+----
 tkn version
+----
+
+### Setting up Pipeline
 
 For our lab today, we will utilize the Tekton pipeline on our OpenShift AI cluster. A pipeline deployment provides the following benefits:
 
@@ -205,7 +217,7 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
   --workspace name=shared-workspace,claimName=guidellm-output-pvc
 ----
 
-HINT: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy, example maybe vllm namespace have 3scale network policy which needs to be removed!
+TIP: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy, example maybe vllm namespace have 3scale network policy which needs to be removed!
 
 ## Download Results
 
