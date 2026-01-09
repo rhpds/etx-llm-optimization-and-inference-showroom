@@ -34,13 +34,31 @@ There are several current ways you may deploy and use GuideLLM.
 * Kubernetes job: You can see an example of this in this https://github.com/rh-aiservices-bu/guidellm-pipeline[repository]
 * Tekton pipeline: Refer to this https://github.com/ishuverma/guidellm-pipeline.git[repository] which was forked from above repository.
 
-NOTE: Run the below command to install the Tekton CLI +
-**For Lab Showroom terminal:** +
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash +
-**For your local machine:** +
-curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | grep "browser_download_url.*_Linux_x86_64.tar.gz" | cut -d '"' -f 4) | sudo tar -xz -C /usr/local/bin tkn +
-**For Mac users (Darwin):** Update the above curl command to download the `*_Darwin_all.tar.gz` archive. +
+[NOTE]
+====
+Install the Tekton CLI using the appropriate command for your platform:
+
+*For Lab Showroom terminal (Linux):*
+
+[source,bash]
+----
+curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | grep "browser_download_url.*_Linux_x86_64.tar.gz" | cut -d '"' -f 4) | sudo tar -xz -C /usr/local/bin tkn
+----
+
+*For Mac users (Darwin):*
+
+[source,bash]
+----
+curl -sL $(curl -s https://api.github.com/repos/tektoncd/cli/releases/latest | grep "browser_download_url.*_Darwin_all.tar.gz" | cut -d '"' -f 4) | sudo tar -xz -C /usr/local/bin tkn
+----
+
+Verify the installation:
+
+[source,bash]
+----
 tkn version
+----
+====
 
 For our lab today, we will utilize the Tekton pipeline on our OpenShift AI cluster. A pipeline deployment provides the following benefits:
 
@@ -52,10 +70,57 @@ For our lab today, we will utilize the Tekton pipeline on our OpenShift AI clust
 * Version control / auditability
 * Better handling of complex, multi-stage workflows
 
-First, we'll clone the GuideLLM pipeline repo. Then we'll clone the benchmark pipeline repo, apply the PVC, task and pipeline. We'll also create an s3 bucket in Minio where the pipeline will upload the benchmark results.
+== Understanding GuideLLM Configuration
+
+Before setting up the pipeline, let's review the GuideLLM configuration options to understand what parameters we'll be using.
+
+=== GuideLLM Arguments
+
+* Peruse the available GuideLLM https://github.com/vllm-project/guidellm[configuration options].
+* The GitHub README gives detailed information about configuration flags
+
+=== Input/Output Tokens
+
+For different use cases, you can set different standardized dataset profiles that can be passed in as arguments in GuideLLM. For example, the following variables represent input and output tokens, respectively, based on the given use case:
+
+* *Chat (512/256)*
+* *RAG (4096/512)*
+* *Summarization (1024/256)*
+* *Code Generation (512/512)*
+
+Using these profiles, we can map specific I/O token scenarios to real-world use cases to make these runs more explainable in terms of how this impacts applications.
+
+=== Rate Type (--rate-type)
+
+The `--rate-type` parameter defines the type of benchmark to run. By default GuideLLM will do a sweep of available benchmarks, but you may choose to isolate specific benchmark tests.
+
+*synchronous*::
+Runs a single stream of requests one at a time. `--rate` must not be set for this mode.
+
+*throughput*::
+Runs all requests in parallel to measure the maximum throughput for the server (bounded by `GUIDELLM__MAX_CONCURRENCY` config argument). `--rate` must not be set for this mode.
+
+*concurrent*::
+Runs a fixed number of streams of requests in parallel. `--rate` must be set to the desired concurrency level/number of streams.
+
+*constant*::
+Sends requests asynchronously at a constant rate set by `--rate`.
+
+*poisson*::
+Sends requests at a rate following a Poisson distribution with the mean set by `--rate`.
+
+*sweep*::
+Automatically determines the minimum and maximum rates the server can support by running synchronous and throughput benchmarks, and then runs a series of benchmarks equally spaced between the two rates. The number of benchmarks is set by `--rate` (default is 10).
+
+=== Data Selection (--data)
+
+GuideLLM has a default dataset it uses if you do not specify anything specific. However, the dataset you use should align with the customer use case you are working on.
+
+== Pipeline Setup
+
+Now that we understand the GuideLLM configuration options, let's set up the pipeline. We'll clone the GuideLLM pipeline repo, apply the PVC, task and pipeline resources, and create an S3 bucket in MinIO where the pipeline will upload the benchmark results.
 
 . Clone the GuideLLM pipeline repo.
-
 +
 [source,console,role=execute,subs=attributes+]
 ----
@@ -73,38 +138,6 @@ oc apply -f guidellm-pipeline/pipeline/pvc.yaml -n vllm
 oc apply -f guidellm-pipeline/pipeline/guidellm-benchmark-task.yaml -n vllm
 oc apply -f guidellm-pipeline/pipeline/mino-bucket.yaml -n vllm
 ----
-
-Before running the pipeline, let's review the options for GuideLLM more closely.
-
-## GuideLLM Arguments
-
-* Peruse the available GuideLLM https://github.com/vllm-project/guidellm[configuration options].
-* The GitHub README gives detailed information about configuration flags
-
-### Input/Output tokens
-For different use cases, you can set different standardized dataset profiles that can be passed in as arguments in GuideLLM. For example, the following variables represent input and output tokens, respectively, based on the given use case:
-
-* **Chat (512/256)**
-* **RAG (4096/512)**
-* **Summarization (1024/256)**
-* **Code Generation (512/512)**
-
-Using these profiles, we can map specific I/O token scenarios to real-world use cases to make these runs more explainable in terms of how this impacts applications.
-
-### --rate-type
-
-**--rate-type** defines the type of benchmark to run. By default GuideLLM will do a sweep of available benchmarks, but you may choose to isolate specific benchmark tests.
-
-* synchronous: Runs a single stream of requests one at a time. --rate must not be set for this mode.
-* throughput: Runs all requests in parallel to measure the maximum throughput for the server (bounded by GUIDELLM__MAX_CONCURRENCY config argument). --rate must not be set for this mode.
-* concurrent: Runs a fixed number of streams of requests in parallel. --rate must be set to the desired concurrency level/number of streams.
-* constant: Sends requests asynchronously at a constant rate set by --rate.
-* poisson: Sends requests at a rate following a Poisson distribution with the mean set by --rate.
-* sweep: Automatically determines the minimum and maximum rates the server can support by running synchronous and throughput benchmarks, and then runs a series of benchmarks equally spaced between the two rates. The number of benchmarks is set by --rate (default is 10).
-
-### --data
-
-GuideLLM has a default dataset it uses if you do not specify anything specific. However, the dataset you use should align with the customer use case you are working on.
 
 ## Use-Case Specific Data Requirements
 
@@ -134,7 +167,7 @@ Real workloads differ significantly from stock data:
 +
 To ensure that evaluation results reflect real-world workloads, it's important to request a representative client dataset. This helps validate baseline assumptions and capture unique workload characteristics such as traffic distribution, query complexity and domain-specific edge cases.
 
-- Format: Provide data in JSONL or CSV format or any of the https://github.com/vllm-project/guidellm/blob/main/docs/datasets.md[supported formats].
+- Format: Provide data in JSONL or CSV format or any of the https://github.com/vllm-project/guidellm/blob/main/docs/guides/datasets.md[supported formats].
 
 - Sample Size: At least 1,000 representative records are recommended, though larger samples improve accuracy.
 
@@ -168,27 +201,40 @@ To ensure that evaluation results reflect real-world workloads, it's important t
 
 **Key Takeaway**: Stock data for learning; client data for production recommendations.
 
-## Execute the pipeline
+== Execute the Pipeline
 
-Set your external model inference endpoint
-
+. Set your external model inference endpoint:
++
 [source,console,role=execute,subs=attributes+]
 ----
 export INFERENCE_ENDPOINT=$(oc get inferenceservice granite-8b -n vllm -o jsonpath='{.status.url}')
+echo $INFERENCE_ENDPOINT
 ----
 
-* Ensure that the redhat-ai-services helm repo is available
+. Ensure that the redhat-ai-services helm repo is available:
++
+[source,console,role=execute,subs=attributes+]
 ----
 helm repo add redhat-ai-services https://redhat-ai-services.github.io/helm-charts/
 helm repo update redhat-ai-services
 ----
 
-NOTE: Make sure your granite-8b model is deployed on OpenShift AI. If you need to deploy it run: +
-`helm upgrade -i granite-8b redhat-ai-services/vllm-kserve --version 0.5.11 --values workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml -n vllm`
+[NOTE]
+====
+Make sure the granite-8b-instruct model is deployed on OpenShift AI. If you need to deploy it, you can use:
 
+`helm upgrade -i granite-8b-instruct redhat-ai-services/vllm-kserve --version 0.5.11 -f workshop_code/deploy_vllm/vllm_rhoai_custom_1/values.yaml -n vllm`
+====
 
-Run the pipeline with necessary parameters in a terminal. Accept the defaults when prompted. If you chose a different model, adjust the *target* parameter.
+. Remove any restrictive network policies that may block the benchmark pipeline from accessing the inference endpoint:
++
+[source,console,role=execute,subs=attributes+]
+----
+oc delete networkpolicy 3scale -n vllm --ignore-not-found=true
+----
 
+. Run the pipeline with necessary parameters in a terminal. Accept the defaults when prompted. If you chose a different model, adjust the *target* parameter:
++
 [source,console,role=execute,subs=attributes+]
 ----
 tkn pipeline start guidellm-benchmark-pipeline -n vllm \
@@ -204,8 +250,6 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
   --param max-concurrency="10" \
   --workspace name=shared-workspace,claimName=guidellm-output-pvc
 ----
-
-HINT: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy, example maybe vllm namespace have 3scale network policy which needs to be removed!
 
 ## Download Results
 
