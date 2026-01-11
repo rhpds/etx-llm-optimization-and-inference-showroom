@@ -90,7 +90,7 @@ image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
 
 [NOTE]
 ====
-You may substitute the ModelCar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments. 
+You may substitute the ModelCar for a different model and adjust the arguments as desired using vLLM standard args: https://docs.vllm.ai/en/stable/configuration/engine_args.html#named-arguments.
 
 Red Hat Services maintains a collection of pre-built ModelCars on Quay here: https://quay.io/repository/redhat-ai-services/modelcar-catalog?tab=tags
 
@@ -105,6 +105,7 @@ See available options here: https://docs.vllm.ai/en/latest/cli/index.html#-tool-
 * --chat-template:
 
 See available chat templates here: https://docs.vllm.ai/en/stable/features/tool_calling.html
+====
 
 ## Understanding the tool-call-parser and chat-template features
 
@@ -133,7 +134,7 @@ The --tool-call-parser and --chat-template arguments are used to help enable too
 **Incorrect Tool Calls**: It might incorrectly parse parts of the model's output as tool calls, leading to errors or unintended actions when those "calls" are executed.
 
 **Loss of Functionality**: The entire tool-use capability of the model becomes effectively unusable if the parser cannot correctly interpret the model's tool-calling output.
-====
+
 
 ## Conclusion
 
