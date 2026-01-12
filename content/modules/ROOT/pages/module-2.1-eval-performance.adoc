@@ -219,6 +219,18 @@ tkn pipeline start guidellm-benchmark-pipeline -n vllm \
 
 TIP: If the pipeline run fails with `HTTPStatusError: Server error '503 Service Unavailable'` for the provided INFERENCE_ENDPOINT, then check and fix the relevant network policy, example maybe vllm namespace have 3scale network policy which needs to be removed!
 
+[NOTE]
+====
+You can track the PipelineRun progress:
+
+[source,console,role=execute,subs=attributes+]
+----
+tkn pipelinerun logs guidellm-benchmark-pipeline-run-<#> -f -n vllm
+----
+Replace # with the actual piplelinerun name
+
+====
+
 ## Download Results
 
 GuideLLM writes several output files that are uploaded to Minio. Each one focuses on a different layer of analysis, ranging from a quick on-screen summary to fully structured data for dashboards and regression pipelines.

@@ -22,7 +22,7 @@ The framework supports both open-source models and OpenAI-compatible endpoints, 
 
 ## ARC (Abstract and Reasoning Corpus)
 
-Today we will be running the ARC evaluation. 
+Today we will be running the ARC evaluation.
 
 **ARC** (AI2 Reasoning Challenge) is a multiple-choice question answering dataset designed to evaluate advanced reasoning and knowledge application in AI systems. It contains science exam questions from grades 3 to 9, split into two subsets: ARC-Easy, with questions that can often be solved by retrieval or surface-level cues, and ARC-Challenge, which includes more difficult questions requiring reasoning, commonsense understanding, and integration of world knowledge. ARC serves as a benchmark for testing a model’s ability to move beyond factual lookup toward genuine scientific reasoning.
 
@@ -37,6 +37,42 @@ In this section of our lab we will:
 ### Setup Trusty AI
 
 . First, we'll change the `trustyai` managementState from "Removed" to "Managed" in the `default` DataScienceCluster.
+
++
+- Select Red Hat OpenShift AI from the list of installed operators +
+
++
+image::installed-operators.png[Installed Operators]
+
++
+- Click on Data Science Cluster tab +
+
++
+image::dsc-clusters.png[Data Science Cluster]
+
++
+- Edit default-dsc cluster +
+
++
+image::dsc-edit.png[Edit DSC]
+
++
+- Change TrustyAI lmeval in the spec section (line # 160-165) as following: +
+
++
+[source,console,role=execute,subs=attributes+]
+----
+permitCodeExecution: allow
+permitOnline: allow
+managementState: Managed
+----
+
++
+image::dsc-edit-trustyai.png[Edit TrustyAI config]
+
++
+- You can also configure the spec through CLI: +
+
 +
 [source,console,role=execute,subs=attributes+]
 ----
@@ -49,7 +85,7 @@ By default, TrustyAI prevents evaluation jobs from accessing the internet or run
 A typical evaluation job will download two items from Huggingface:
 +
 - The dataset of the evaluation task, and any dataset processing code
-- The tokenizer of your model 
+- The tokenizer of your model
 
 +
 If you trust the source of your dataset and tokenizer, you can override TrustyAI's default setting.
@@ -92,7 +128,7 @@ oc apply -f workshop_code/evals/trusty/arc_easy.yaml -n vllm
 +
 Check out the arc_easy.yaml file to learn more about the `LMEvalJob` specification.
 +
-If everything has worked, you should see a pod called `arc-easy-eval-job` running in your namespace. 
+If everything has worked, you should see a pod called `arc-easy-eval-job` running in your namespace.
 You can watch the progress of your evaluation job by running:
 +
 [source,console,role=execute,subs=attributes+]
@@ -126,7 +162,7 @@ Metric: Performance is measured by multiple-choice accuracy (correct answers out
 +
 **Baseline**: ~25% corresponds to random guessing.
 +
-**Performance ranges**: 
+**Performance ranges**:
 +
 - **50–60%**: typical for smaller or older models.
 +
@@ -175,7 +211,7 @@ returns:
 +
 *acc_norm_stderr,none*: This is the standard error for the normalized accuracy, indicating the margin of error for that specific score.
 +
-Now you're free to play around with evaluations! You can see the full list of evaluation supported by 
+Now you're free to play around with evaluations! You can see the full list of evaluation supported by
 lm-evaluation-harness https://github.com/red-hat-data-services/lm-evaluation-harness/blob/main/lm_eval/tasks/README.md[here^].
 +
 *TrustyAI additional references*
@@ -186,7 +222,7 @@ lm-evaluation-harness https://github.com/red-hat-data-services/lm-evaluation-har
 
 . Try MMLU industry-focused test
 +
-In some cases, you may want to check that a model has retained accuracy around a standard, specific dataset topic. 
+In some cases, you may want to check that a model has retained accuracy around a standard, specific dataset topic.
 +
 Let's try the mmlu_jurisprudence dataset to test the model's knowledge on law. Update the *base_url* to your external inference endpoint.
 +
@@ -195,7 +231,7 @@ Let's try the mmlu_jurisprudence dataset to test the model's knowledge on law. U
 oc apply -f workshop_code/evals/trusty/mmlu_jurisprudence.yaml -n vllm
 ----
 +
-This will only take a minute or so to process. 
+This will only take a minute or so to process.
 +
 [source,console,role=execute,subs=attributes+]
 ----
@@ -218,13 +254,13 @@ To run MMLU-Pro evaluation, you would need to create a custom LMEvalJob configur
 
 **Expected Performance Ranges for MMLU-Pro:**
 
-- ~10% = random guessing baseline (10-option multiple choice)  
+- ~10% = random guessing baseline (10-option multiple choice)
 - ~30-50% = typical for smaller or untuned models
 - ~60-70%+ = high reasoning capability indicating strong performance
 
 NOTE: MMLU-Pro evaluations typically take longer due to the increased difficulty and dataset size.
 
-// TODO:### Testing your model with a custom dataset 
+// TODO:### Testing your model with a custom dataset
 
 // TODO:### Testing your model in a disconnected environment
 
