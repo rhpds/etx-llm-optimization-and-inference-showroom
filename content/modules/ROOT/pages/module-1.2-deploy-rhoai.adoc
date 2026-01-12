@@ -86,7 +86,7 @@ Use your preferred method(s) to verify the successful deployment.
 * Login to OpenShift AI ({openshift_cluster_admin_username}/{openshift_cluster_admin_password})
 * Go to your *vllm Data Science Project. Wait until the model fully deploys (green check) before continuing.
 
-image::granite-deployed-rhoai.png[Granite deployed on RHOAI]
+image::granite-deployed-rhoai-1.png[Granite deployed on RHOAI]
 
 [NOTE]
 ====
