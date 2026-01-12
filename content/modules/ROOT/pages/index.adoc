@@ -7,13 +7,11 @@ Welcome to our LLM Optimization and Inferencing hands-on workshop, where you wil
 This workshop provides hands-on experience with enterprise vLLM deployment, benchmarking, and optimization techniques. You'll learn to deploy models efficiently, evaluate performance, and implement advanced optimization techniques to reduce costs while maintaining quality.
 
 === 🚀 Module 1: LLM Deployment
-**Deploy RH Inference Server across multiple platforms**
+**Deploy RH Inference Server**
 
-* **1.1 OpenShift Deployment**: Deploy using Helm charts and container orchestration for scalable inference
-* **1.2 OpenShift AI Deployment**: Leverage Red Hat OpenShift AI platform for managed LLM serving with enterprise features
-* **1.3 Platform Comparison**: Understand deployment trade-offs and choose the right platform for your use case
+* **1.1 OpenShift AI Deployment**: Leverage Red Hat OpenShift AI platform for managed LLM serving with enterprise features
 
-**Key Skills**: Infrastructure setup, containerization, GPU configuration, cloud-native deployment
+**Key Skills**: Cloud-native deployment
 
 === 📊 Module 2: Performance & Accuracy Evaluation
 **Measure and benchmark LLM systems for production readiness**
@@ -44,7 +42,7 @@ This workshop provides hands-on experience with enterprise vLLM deployment, benc
 
 By the end of this workshop, you will be able to:
 
-* Deploy production-ready LLM inference servers across multiple platforms
+* Deploy production-ready LLM inference server
 * Evaluate and benchmark LLM systems for performance and accuracy
 * Optimize vLLM configurations for specific use cases and constraints
 * Build automated optimization pipelines for enterprise deployment
