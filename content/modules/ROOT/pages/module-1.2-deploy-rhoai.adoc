@@ -3,7 +3,8 @@
 [#deploy-rhoai]
 # Deploy vLLM on OpenShift AI with kserve and model car
 
-1. Log into your provided OpenShift environment URL: {openshift_cluster_console_url}[{openshift_cluster_console_url},window=_blank]
+1. Log into your provided OpenShift environment 
+URL: https://console-openshift-console.{openshift_cluster_ingress_domain}/[https://console-openshift-console.{openshift_cluster_ingress_domain}/,window=_blank].
 * Login to OpenShift ({openshift_cluster_admin_username}/{openshift_cluster_admin_password}) 
 
 2. Once in your OpenShift cluster, confirm you're in vllm namespace. If required create vllm project
