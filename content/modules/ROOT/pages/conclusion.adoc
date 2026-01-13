@@ -116,9 +116,9 @@ Apply these skills to real challenges:
 
 . Deploy a model you're already using (or considering)
 . Establish baseline performance and accuracy metrics
-. Systematically tune vLLM parameters to improve throughput by 2x
+. Systematically tune vLLM parameters to achieve measurable throughput improvements
 . Verify accuracy remains within acceptable thresholds
-. Document the cost-benefit analysis
+. Document the performance gains and cost-benefit analysis
 
 **Project 2: Build a Benchmarking Pipeline**
 
