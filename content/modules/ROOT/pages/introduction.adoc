@@ -1,0 +1,121 @@
+:imagesdir: ../assets/images
+
+[#introduction]
+= Workshop Introduction
+
+== Why LLM Optimization Matters
+
+Organizations deploying large language models face critical challenges that impact both performance and cost:
+
+* **Infrastructure costs**: Running unoptimized LLMs can consume thousands of dollars per day in GPU compute
+* **Latency requirements**: Production applications demand sub-second response times that raw models struggle to achieve
+* **Resource constraints**: Limited GPU availability creates bottlenecks in scaling AI initiatives
+* **Quality trade-offs**: Balancing model performance with computational efficiency remains complex
+
+These challenges are not hypothetical. Real-world deployments consistently encounter scenarios where:
+
+* Customer-facing chatbots timeout during peak usage, degrading user experience
+* Inference costs exceed projected budgets, threatening project viability
+* GPU resource contention blocks new AI initiatives from launching
+* Model accuracy degradation from aggressive optimization breaks production use cases
+
+== The Business Case for Optimization
+
+Effective LLM optimization delivers measurable business value across three key areas:
+
+**Cost Reduction**
+
+* Significant reduction in inference costs through configuration optimization and efficient resource utilization
+* Improved GPU utilization, reducing required infrastructure investment
+* Lower operational overhead through systematic performance tuning
+
+**Performance Improvement**
+
+* Increased throughput through optimized serving configurations
+* Reduced latency enabling better user experiences
+* Consistent performance under variable load conditions
+
+**Operational Excellence**
+
+* Faster iteration cycles through systematic benchmarking
+* Data-driven decision making with quantified performance metrics
+* Reduced time-to-production for new models and use cases
+
+[NOTE]
+====
+The specific improvements you achieve depend on your baseline configuration, workload characteristics, and optimization targets. This workshop teaches you to measure and quantify improvements in your specific environment.
+====
+
+== What Makes This Workshop Different
+
+This workshop focuses on **practical, production-ready techniques** used by enterprises successfully running LLMs at scale:
+
+* **Hands-on experience**: Deploy, measure, and optimize real models using enterprise tools
+* **Real-world scenarios**: Learn evaluation methods that matter in production environments
+* **Proven methodologies**: Apply optimization techniques validated across production deployments
+* **Enterprise context**: Understand how to qualify opportunities and communicate value to stakeholders
+
+You will work with:
+
+* **Red Hat OpenShift AI**: Enterprise-grade platform for managed model serving
+* **vLLM**: High-performance inference server optimized for throughput and latency
+* **GuideLLM**: Comprehensive benchmarking tool for realistic performance evaluation
+* **Production patterns**: Configuration strategies proven across real deployments
+
+== The Technical Journey
+
+This workshop guides you through the complete optimization lifecycle:
+
+**Phase 1: Deploy Foundation** (Module 1)
+
+Establish baseline model serving on OpenShift AI, creating the foundation for measurement and optimization.
+
+**Phase 2: Measure and Evaluate** (Module 2)
+
+Learn to benchmark both performance (throughput, latency, resource utilization) and accuracy (task-specific metrics, quality assessment) using industry-standard tools.
+
+**Phase 3: Optimize for Production** (Module 3)
+
+Apply systematic tuning to vLLM configurations, balancing performance requirements against resource constraints through data-driven experimentation.
+
+**Phase 4: Reference and Resources**
+
+Access enterprise qualification frameworks, technical deep dives, and model comparison examples to apply these techniques in your environment.
+
+== Success Criteria
+
+By the end of this workshop, you will be able to:
+
+* ✓ Deploy production-ready LLM inference servers on enterprise platforms
+* ✓ Conduct comprehensive performance and accuracy evaluations
+* ✓ Optimize vLLM configurations to meet specific SLA requirements
+* ✓ Make data-driven decisions about model selection and deployment strategies
+* ✓ Quantify business value and technical trade-offs for stakeholder discussions
+
+== Prerequisites
+
+To get the most from this workshop, you should have:
+
+* Basic understanding of containers and Kubernetes concepts
+* Familiarity with machine learning fundamentals (what models do, basic metrics)
+* Access to the workshop environment (OpenShift cluster with GPU resources)
+* Comfort with command-line tools and YAML configuration
+
+**Note**: You do not need deep expertise in machine learning or LLM internals. This workshop focuses on practical deployment and optimization skills.
+
+== Workshop Environment
+
+You have access to:
+
+* **OpenShift AI cluster**: Pre-configured with GPU resources and required operators
+* **Sample models**: Industry-standard models ready for deployment and testing
+* **Benchmarking tools**: Pre-installed GuideLLM and evaluation frameworks
+* **Reference materials**: Technical guides and enterprise qualification frameworks
+
+All credentials and access details are provided in your workshop environment.
+
+== Ready to Begin?
+
+The skills you develop in this workshop directly translate to production environments. The techniques, tools, and methodologies represent current best practices from organizations successfully operating LLMs at scale.
+
+Let's start by deploying your first optimized inference server.

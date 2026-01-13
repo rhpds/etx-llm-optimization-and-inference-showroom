@@ -2,6 +2,8 @@
 
 Welcome to our LLM Optimization and Inferencing hands-on workshop, where you will gain technical experience serving models with vLLM and optimizing performance and accuracy in a number of ways.
 
+Before diving into the modules, review the xref:introduction.adoc#introduction[Workshop Introduction] to understand the business context, challenges, and value of LLM optimization.
+
 == Module Overview
 
 This workshop provides hands-on experience with enterprise vLLM deployment, benchmarking, and optimization techniques. You'll learn to deploy models efficiently, evaluate performance, and implement advanced optimization techniques to reduce costs while maintaining quality.
@@ -54,3 +56,7 @@ By the end of this workshop, you will be able to:
 * **Format**: Mix of theory, hands-on labs, and real-world scenarios
 * **Prerequisites**: Basic familiarity with containers, Kubernetes, and machine learning concepts
 * **Environment**: Access to OpenShift cluster with GPU resources
+
+---
+
+After completing all modules, visit the xref:conclusion.adoc#conclusion[Workshop Conclusion] for key takeaways, next steps, and additional resources to continue your LLM optimization journey.
